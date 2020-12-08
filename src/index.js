@@ -6,6 +6,8 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
+// ReactDOM doesn't refer to the same DOM we know. 
+// Instead, it refers to a Virtual DOM. The Virtual DOM is a key piece of how React works.
 ReactDOM.render(
   <React.StrictMode>
     <App />
