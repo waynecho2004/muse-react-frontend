@@ -61,12 +61,27 @@ class SongContainer extends Component {
     }
   };
 
+  // we are using async and await again because we are sending a delete request 
+  // to our flask server and we have to wait for the response.
+  deleteSong = async (id) => {
+    console.log(id);
+    const deleteSongResponse = await axios.delete(
+      `${process.env.REACT_APP_FLASK_API_URL}/api/v1/songs/${id}`
+    );
+    console.log(deleteSongResponse);
+    // Now that the db has deleted our item, we need to remove it from state
+    // Then make the delete request, then remove the song from the state array using filter
+    this.setState({ songs: this.state.songs.filter((song) => song.id !== id) });
+
+    console.log(deleteSongResponse, ' response from Flask server');
+  };  
+
   render() {
     return (
       <Grid columns={2} divided textAlign='center' style={{ height: '100%' }} verticalAlign='top' stackable>
         <Grid.Row>
           <Grid.Column>
-            <SongList songs={this.state.songs} />
+            <SongList songs={this.state.songs} deleteSong={this.deleteSong}/>
           </Grid.Column>
           <Grid.Column>
             <CreateSongForm addSong={this.addSong} />

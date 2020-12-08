@@ -4,7 +4,7 @@ import { Form, Button, Label, Segment } from 'semantic-ui-react';
 class CreateSongForm extends Component {
     constructor() {
         super();
-
+        
         this.state = {
             title: '',
             artist: '',
@@ -21,9 +21,9 @@ class CreateSongForm extends Component {
         return (
             <Segment>
                 <h4>Create Song</h4>
-                <Form onSubmit={(e) => {
-                    this.props.addSong(e, this.state);
-                    this.setState({ title: '', artist: '', album: ''})
+                <Form onSubmit={(e) => {   // this is a Submit event
+                    this.props.addSong(e, this.state);  // addSong: pass down from parent component
+                    this.setState({ title: '', artist: '', album: ''})  // clear the form after adding a song record
                 }}>
                     <Label>Title:</Label>
                     <Form.Input type='text' name='title' value={this.state.title} onChange={this.handleChange} />
