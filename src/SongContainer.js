@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import SongList from './SongList';
+import CreateSongForm from './CreateSongForm'
+import { Grid } from 'semantic-ui-react';
 
 class SongContainer extends Component {
   constructor(props){
@@ -27,12 +29,22 @@ class SongContainer extends Component {
     }
   };
   
+  addSong = (e, song) => {  
+    console.log(song);
+  };
+
   render(){
     return (
-        <>
-        <h1>Welcome To Songs Page</h1>
-        <SongList songs={this.state.songs} />
-        </>
+        <Grid columns={2} divided textAlign='center' style={{ height: '100%' }} verticalAlign='top' stackable>
+          <Grid.Row>
+            <Grid.Column>
+              <SongList songs={this.state.songs}/>
+            </Grid.Column>
+            <Grid.Column>
+            <CreateSongForm addDog={this.addSong}/>
+            </Grid.Column>
+          </Grid.Row>
+        </Grid>
       )
   }
 }
