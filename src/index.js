@@ -1,5 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+// place this before index.css in case your customized index.css wants to override some change
+import 'semantic-ui-css/semantic.min.css' 
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
