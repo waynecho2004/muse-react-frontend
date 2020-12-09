@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import SongList from './SongList';
 import CreateSongForm from './CreateSongForm'
+import EditSongModal from './EditSongModal';
 import { Grid } from 'semantic-ui-react';
 
 class SongContainer extends Component {
@@ -14,7 +15,8 @@ class SongContainer extends Component {
         title: '',
         artist: '',
         album: ''
-      }
+      },
+      showEditModal: false
     }
   }
   componentDidMount() {
@@ -92,6 +94,44 @@ class SongContainer extends Component {
     });
   };
   
+  handleEditChange = (e) => {
+    this.setState({
+      songToEdit: {
+        ...this.state.songToEdit,
+        [e.currentTarget.name]: e.currentTarget.value,
+      },
+    });
+  };  
+
+  closeAndEdit = async (e) => {
+    e.preventDefault();
+    try {
+      const editResponse = await axios.put(
+        process.env.REACT_APP_FLASK_API_URL +
+          '/api/v1/songs/' +
+          this.state.songToEdit.id,
+        this.state.songToEdit
+      );
+  
+      console.log(editResponse, ' parsed edit');
+  
+      const newSongArrayWithEdit = this.state.songs.map((song) => {
+        if (song.id === editResponse.data.data.id) {
+          song = editResponse.data.data;
+        }
+  
+        return song;
+      });
+  
+      this.setState({
+        showEditModal: false,
+        songs: newSongArrayWithEdit,
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  
 
   render() {
     return (
@@ -106,6 +146,11 @@ class SongContainer extends Component {
           <Grid.Column>
             <CreateSongForm addSong={this.addSong} />
           </Grid.Column>
+          <EditSongModal 
+            handleEditChange={this.handleEditChange} 
+            open={this.state.showEditModal} 
+            songToEdit={this.state.songToEdit}
+            closeAndEdit={this.closeAndEdit}/>
         </Grid.Row>
       </Grid>
     )
