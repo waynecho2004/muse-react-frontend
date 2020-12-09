@@ -9,7 +9,12 @@ class SongContainer extends Component {
     super(props);
 
     this.state = {
-      songs: []
+      songs: [],
+      songToEdit: {
+        title: '',
+        artist: '',
+        album: ''
+      }
     }
   }
   componentDidMount() {
@@ -76,12 +81,27 @@ class SongContainer extends Component {
     console.log(deleteSongResponse, ' response from Flask server');
   };  
 
+  openAndEdit = (songFromTheList) => {
+    console.log(songFromTheList, ' songToEdit  ');
+  
+    this.setState({
+      showEditModal: true,
+      songToEdit: {
+        ...songFromTheList,
+      },
+    });
+  };
+  
+
   render() {
     return (
       <Grid columns={2} divided textAlign='center' style={{ height: '100%' }} verticalAlign='top' stackable>
         <Grid.Row>
           <Grid.Column>
-            <SongList songs={this.state.songs} deleteSong={this.deleteSong}/>
+            <SongList 
+              songs={this.state.songs} 
+              deleteSong={this.deleteSong} 
+              openAndEdit={this.openAndEdit}/>
           </Grid.Column>
           <Grid.Column>
             <CreateSongForm addSong={this.addSong} />
